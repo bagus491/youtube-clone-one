@@ -46,6 +46,15 @@ app.set('views',path.join(__dirname, './src/views'))
 //database
 require('./src/Db/Db')
 
+//four
+const UserRouter = require('./src/Router/UserRouter')
+app.use(UserRouter)
+
+//third
+app.use('/',(req,res) => {
+    res.status(404).send('404 NOT FOUND')
+})
+
 
 //first-setup
 app.listen(port, () => {
