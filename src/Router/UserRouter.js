@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb} = require('../Controllers/UsersControllers')
 //auth
 const Auth = require('../Auth/Auth')
 
@@ -21,7 +21,8 @@ app.get('/',HomeWeb)
 app.get('/login',LoginPage)
 //Register
 app.get('/register',RegisterPage)
-
+//Dasbord
+app.get('/dasbord',DasbordWeb)
 
 
 

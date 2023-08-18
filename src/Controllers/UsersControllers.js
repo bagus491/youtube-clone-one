@@ -40,8 +40,18 @@ const RegisterPage = (req,res) => {
 }
 
 
+//Dasbord
+const DasbordWeb = (req,res) => {
+  try{
+    res.render('Dasbord',{
+      title: 'Dasbord',
+      layout : 'main-layouts/main-layouts.ejs'
+    })
+  }catch(error){
+      res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
 
 
 
-
-module.exports = {HomeWeb,LoginPage,RegisterPage}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb}

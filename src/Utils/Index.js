@@ -28,7 +28,10 @@ const NewUser = (username,password,email) => {
     })
 }
 
+//getUsers 
+const GetUser = async (username) => {
+    return await Users.findOne({username})
+}
 
 
-
-module.exports = {NewUser,Validation}
+module.exports = {NewUser,Validation,GetUser}
