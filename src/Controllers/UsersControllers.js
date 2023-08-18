@@ -14,10 +14,33 @@ const HomeWeb = (req,res) => {
 }
 
 
+//loginpage
+const LoginPage = (req,res) => {
+  try{
+    res.render('Login',{
+      title: 'Login',
+      layout : 'Login.ejs'
+    })
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
+
+//loginpage
+const RegisterPage = (req,res) => {
+  try{
+    res.render('Register',{
+      title: 'Register',
+      layout : 'Register.ejs'
+    })
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
 
 
 
 
 
 
-module.exports = {HomeWeb}
+module.exports = {HomeWeb,LoginPage,RegisterPage}

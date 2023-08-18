@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage} = require('../Controllers/UsersControllers')
 
 //view engine
 const mainlayouts = require('express-ejs-layouts')
@@ -15,7 +15,10 @@ app.use(express.static(path.join(__dirname, '../public/')))
 
 //get
 app.get('/',HomeWeb)
-
+//loginpage
+app.get('/login',LoginPage)
+//Register
+app.get('/register',RegisterPage)
 
 
 
