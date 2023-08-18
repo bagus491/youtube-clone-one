@@ -1,0 +1,159 @@
+
+
+.nav {
+
+ 
+        & .sideNav {
+            width: 0px;
+            height: 100vh;
+            background: white;
+            position: fixed;
+            z-index: 1;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            transition: 0.2s;
+            & .size-button button {
+                &  i {
+                    padding:  2px 2px 2px 2px;
+                    font-size: 10px;
+                }
+            }
+
+            & ul {
+                list-style: none;
+
+                & li a {
+                    text-decoration: none;
+                    font-size: 20px;
+                    font-family: cursive;
+                }
+            }
+        }
+
+        & .active {
+            width: 180px;
+            transition: 0.2s;
+            display: flex;
+            padding: 10px;
+            flex-direction: column;
+
+            & .first {
+                display: flex;
+                &  .size-button button {
+                    &  i {
+                        padding:  2px 2px 2px 2px;
+                        font-size: 10px;
+                    }
+                }
+    
+                &  ul {
+                    list-style: none;
+    
+                    & li a {
+                        text-decoration: none;
+                        font-size: 20px;
+                        font-family: cursive;
+                    }
+                }
+
+            }
+
+            & .page {
+                display: flex;
+                flex-direction: column;
+                & ul {     
+                    margin-top: 30px;
+                }
+                & ul:hover {
+                    background: #ddd;
+                }
+            }
+        }
+    
+
+    & .topNav{
+        height: 50px;
+        width: 100%;
+        // background: aqua;
+       display: flex;
+       justify-content: center;
+
+       & .width-flex {
+        width: 100%;
+
+        & .flex {
+            display: flex;
+            flex-wrap: wrap;
+
+            & .tittle {
+                flex: 25%;
+                padding: 10px;
+                // background: brown;
+                display: flex;
+                
+                & .size-button button {
+                    &  i {
+                        padding:  5px 5px 5px 5px;
+                        font-size: 20px;
+                    }
+                }
+
+                & ul {
+                    list-style: none;
+
+                    & li a {
+                        text-decoration: none;
+                        font-size: 25px;
+                        font-family: cursive;
+                    }
+                }
+
+            }
+
+            & .search {
+                flex: 50%;
+                padding: 10px;
+                // background: greenyellow;
+            }
+
+            & .profile {
+                flex: 25%;
+                padding: 10px;
+                // background: aqua;
+
+                & ul {
+                    display: flex;
+                    list-style: none;
+                    justify-content: space-evenly;
+
+                    & li a {
+                        text-decoration: none;
+                    }
+                }
+            }
+
+        }
+       }
+    }
+}
+
+.searchform {
+    display: none;
+}
+
+@media screen and (max-width: 576px){
+
+
+    .search {
+        display: none;
+    }
+
+    .profile ul li a {
+        margin-right: 20px;
+        font-size: 15px;
+    }
+
+  .searchform{
+    display: flex;
+  }
+}

@@ -1,0 +1,122 @@
+.nav .sideNav {
+  width: 0px;
+  height: 100vh;
+  background: white;
+  position: fixed;
+  z-index: 1;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  transition: 0.2s;
+}
+.nav .sideNav .size-button button i {
+  padding: 2px 2px 2px 2px;
+  font-size: 10px;
+}
+.nav .sideNav ul {
+  list-style: none;
+}
+.nav .sideNav ul li a {
+  text-decoration: none;
+  font-size: 20px;
+  font-family: cursive;
+}
+.nav .active {
+  width: 180px;
+  transition: 0.2s;
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+.nav .active .first {
+  display: flex;
+}
+.nav .active .first .size-button button i {
+  padding: 2px 2px 2px 2px;
+  font-size: 10px;
+}
+.nav .active .first ul {
+  list-style: none;
+}
+.nav .active .first ul li a {
+  text-decoration: none;
+  font-size: 20px;
+  font-family: cursive;
+}
+.nav .active .page {
+  display: flex;
+  flex-direction: column;
+}
+.nav .active .page ul {
+  margin-top: 30px;
+}
+.nav .active .page ul:hover {
+  background: #ddd;
+}
+.nav .topNav {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.nav .topNav .width-flex {
+  width: 100%;
+}
+.nav .topNav .width-flex .flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.nav .topNav .width-flex .flex .tittle {
+  flex: 25%;
+  padding: 10px;
+  display: flex;
+}
+.nav .topNav .width-flex .flex .tittle .size-button button i {
+  padding: 5px 5px 5px 5px;
+  font-size: 20px;
+}
+.nav .topNav .width-flex .flex .tittle ul {
+  list-style: none;
+}
+.nav .topNav .width-flex .flex .tittle ul li a {
+  text-decoration: none;
+  font-size: 25px;
+  font-family: cursive;
+}
+.nav .topNav .width-flex .flex .search {
+  flex: 50%;
+  padding: 10px;
+}
+.nav .topNav .width-flex .flex .profile {
+  flex: 25%;
+  padding: 10px;
+}
+.nav .topNav .width-flex .flex .profile ul {
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+}
+.nav .topNav .width-flex .flex .profile ul li a {
+  text-decoration: none;
+}
+
+.searchform {
+  display: none;
+}
+
+@media screen and (max-width: 576px) {
+  .search {
+    display: none;
+  }
+  .profile ul li a {
+    margin-right: 20px;
+    font-size: 15px;
+  }
+  .searchform {
+    display: flex;
+  }
+}
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}/*# sourceMappingURL=main.css.map */
