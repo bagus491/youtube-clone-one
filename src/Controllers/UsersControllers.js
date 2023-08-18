@@ -66,13 +66,35 @@ const DasbordWeb = (req,res) => {
   try{
     res.render('Dasbord',{
       title: 'Dasbord',
-      layout : 'main-layouts/main-layouts.ejs'
+      layout : 'Dasbord.ejs'
     })
   }catch(error){
       res.status(500).json({msg : 'Internal Server Error'})
   }
 }
 
+//uploadWeb
+const UploadWeb = (req,res) => {
+  try{
+    res.render('Upload',{
+      title: 'Upload',
+      layout : 'Upload.ejs'
+    })
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
 
+//Profile
+const ProfileWeb = (req,res) =>{
+  try{
+    res.render('Profile',{
+      title: 'Profile',
+      layout : 'Profile.ejs'
+    })
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb,ProfileWeb}

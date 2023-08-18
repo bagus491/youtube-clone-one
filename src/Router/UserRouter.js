@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb,ProfileWeb} = require('../Controllers/UsersControllers')
 //auth
 const Auth = require('../Auth/Auth')
 //getUser
@@ -53,11 +53,18 @@ app.get('/login',LoginPage)
 app.get('/register',RegisterPage)
 //Dasbord
 app.get('/dasbord',DasbordWeb)
+//upload
+app.get('/dasbord/upload',UploadWeb)
+//profile
+app.get('/dasbord/profile',ProfileWeb)
 
 
-
-
-
+//logout
+app.get('/dasbord/logout',(req,res) => {
+    req.flash('msg','success Logout')
+    res.clearCookie('token','')
+    res.redirect('/login')
+})
 
 
 
