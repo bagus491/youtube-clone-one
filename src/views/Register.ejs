@@ -14,7 +14,16 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">Register Form</h5>
-              <form>
+              <% if (typeof error != 'undefined') { %>
+                <div class="alert alert-info" role="alert">
+                 <ul>
+                  <% error.forEach(e => { %>
+                   <li><%= e.msg %></li>
+                  <% }) %>
+                 </ul>
+                </div>
+              <% } %>
+              <form method="post" action="/register">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username"  name="username" required>

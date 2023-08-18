@@ -14,6 +14,11 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">Login Form</h5>
+              <% if (msg.length != 0) { %>
+                <div class="alert alert-success" role="alert">
+                <%= msg %>
+                </div>
+              <% } %>
               <form>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>

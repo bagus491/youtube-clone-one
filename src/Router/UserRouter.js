@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 //UserControllers
 const {HomeWeb,LoginPage,RegisterPage} = require('../Controllers/UsersControllers')
+//auth
+const Auth = require('../Auth/Auth')
 
 //view engine
 const mainlayouts = require('express-ejs-layouts')
@@ -28,6 +30,6 @@ app.get('/register',RegisterPage)
 
 
 
-
+app.use(Auth)
 
 module.exports = app

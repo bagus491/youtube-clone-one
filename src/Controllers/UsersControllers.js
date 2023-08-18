@@ -19,7 +19,8 @@ const LoginPage = (req,res) => {
   try{
     res.render('Login',{
       title: 'Login',
-      layout : 'Login.ejs'
+      layout : 'Login.ejs',
+      msg: req.flash('msg')
     })
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})
