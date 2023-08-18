@@ -1,5 +1,8 @@
-
-
+//jsonwebtoken 
+const jwt = require('jsonwebtoken')
+const secret = '!@#$%&*()-==-}?123'
+//getUser
+const {GetUser} = require('../Utils/Index')
 
 //homeWeb
 const HomeWeb = (req,res) => {
@@ -17,10 +20,28 @@ const HomeWeb = (req,res) => {
 //loginpage
 const LoginPage = (req,res) => {
   try{
-    res.render('Login',{
-      title: 'Login',
-      layout : 'Login.ejs',
-      msg: req.flash('msg')
+    const token = req.cookies.token || req.headers.authorization
+    if(!token) {
+      return res.status(401).render('Login',{
+        title: 'Login',
+        layout : 'Login.ejs',
+        msg: req.flash('msg')
+      })
+    }
+
+    jwt.verify(token,secret,async (err,decoded) => {
+      if(err){
+        return res.status(401).redirect('/login')
+    }
+
+    const decodedUser = decoded.username
+    
+    const CheckUser = await GetUser(decodedUser)
+    if(!CheckUser){
+        return res.status(401).redirect('/login')
+    }
+
+    res.redirect('/dasbord')
     })
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})
@@ -54,4 +75,4 @@ const DasbordWeb = (req,res) => {
 
 
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret}
