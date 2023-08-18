@@ -43,7 +43,8 @@ app.use(mainlayouts)
 const path = require('path')
 app.set('views',path.join(__dirname, './src/views'))
 
-
+//database
+require('./src/Db/Db')
 
 
 //first-setup
