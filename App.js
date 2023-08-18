@@ -35,14 +35,6 @@ app.use(session({
 }))
 app.use(flash())
 
-//view engine
-const mainlayouts = require('express-ejs-layouts')
-app.set('view engine', 'ejs')
-app.use(mainlayouts)
-
-const path = require('path')
-app.set('views',path.join(__dirname, './src/views'))
-
 //database
 require('./src/Db/Db')
 

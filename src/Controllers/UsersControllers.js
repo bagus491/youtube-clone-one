@@ -4,7 +4,10 @@
 //homeWeb
 const HomeWeb = (req,res) => {
     try{
-        res.send('hello world')
+      res.render('HomeWeb',{
+        title: 'Home',
+        layout : 'main-layouts/main-layouts.ejs'
+      })
     }catch(error){
         res.status(500).json({msg : 'Internal Server Error'})
     }
