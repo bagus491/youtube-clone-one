@@ -4,6 +4,7 @@ const secret = '!@#$%&*()-==-}?123'
 //getUser
 const {GetUser} = require('../Utils/Index')
 
+
 //homeWeb
 const HomeWeb = (req,res) => {
     try{
@@ -31,14 +32,14 @@ const LoginPage = (req,res) => {
 
     jwt.verify(token,secret,async (err,decoded) => {
       if(err){
-        return res.status(401).redirect('/login')
+        return res.status(401)
     }
 
     const decodedUser = decoded.username
     
     const CheckUser = await GetUser(decodedUser)
     if(!CheckUser){
-        return res.status(401).redirect('/login')
+        return res.status(401)
     }
 
     res.redirect('/dasbord')
@@ -85,16 +86,5 @@ const UploadWeb = (req,res) => {
   }
 }
 
-//Profile
-const ProfileWeb = (req,res) =>{
-  try{
-    res.render('Profile',{
-      title: 'Profile',
-      layout : 'Profile.ejs'
-    })
-  }catch(error){
-    res.status(500).json({msg : 'Internal Server Error'})
-  }
-}
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb,ProfileWeb}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,UploadWeb,jwt,secret}

@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb,ProfileWeb} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb} = require('../Controllers/UsersControllers')
+const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
 //auth
 const Auth = require('../Auth/Auth')
 //getUser
@@ -16,6 +17,15 @@ const path = require('path')
 app.set('views',path.join(__dirname, '../views'))
 
 app.use(express.static(path.join(__dirname, '../public/')))
+
+//multer
+const multer = require('multer')
+const storage = multer.memoryStorage()
+const Upload = multer({storage: storage})
+
+//method_override
+const override = require('method-override')
+app.use(override('_method'))
 
 //midleware
 
@@ -56,9 +66,15 @@ app.get('/dasbord',DasbordWeb)
 //upload
 app.get('/dasbord/upload',UploadWeb)
 //profile
-app.get('/dasbord/profile',ProfileWeb)
+app.get('/dasbord/profile',ProfileGet)
 
 
+//post
+app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)
+
+
+//deleteProfile
+app.delete('/dasbord/profile',ProfileDelete)
 //logout
 app.get('/dasbord/logout',(req,res) => {
     req.flash('msg','success Logout')

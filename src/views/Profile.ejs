@@ -82,6 +82,47 @@
         })
     </script>
     </nav>
+
+    <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh;">
+        <div class="box">
+            <% if (msg.length != 0) { %>
+                <div class="alert alert-success" role="alert">
+                  <%= msg %>
+                  </div>
+            <% } %>
+            <% if (!Profile) { %>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">Add Profile</h5>
+                      <form method="post" action="/dasbord/profile" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="NameProfile" class="form-label">NameProfile</label>
+                            <input type="text" class="form-control" id="NameProfile"  name="NameProfile" placeholder="NameProfile" required>
+                          </div>
+                        <div class="mb-3">
+                          <label for="Avatar" class="form-label">Avatar</label>
+                          <input type="file" class="form-control" id="Avatar"  name="Avatar" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                     
+                    </div>
+                  </div>
+            <% } else { %>
+              <div class="card" style="width: 18rem;">
+                <img src="<%= Profile.ImagePath %>" class="card-img-top" alt="foto">
+                <div class="card-body">
+                  <h5 class="card-title"><%= Profile.NameProfile %></h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <form method="post" action="/dasbord/profile?_method=DELETE">
+                     <input type="hidden" name="deleteProfile" value="<%= Profile.NameProfile %>">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('yakin?')">Delete</button>
+                  </form>
+                </div>
+              </div>
+             <% } %>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>
 </html>

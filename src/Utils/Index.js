@@ -34,4 +34,29 @@ const GetUser = async (username) => {
 }
 
 
-module.exports = {NewUser,Validation,GetUser}
+//profile Model
+const Profile = require('../Models/Profile')
+
+
+// new Profile
+const NewProfil = (username,NameProfile,file) =>{
+    return new Profile({
+        username,
+        NameProfile,
+        imageName:file.filename,
+        imageFile:file.buffer,
+        imageType:file.mimetype,
+    })
+}
+
+//GetProfile
+const GetProfile = async (username) => {
+    return await Profile.findOne({username})
+}
+
+//deleteProfile
+const GetDelete = async(NameProfile) => {
+    return await Profile.deleteOne({NameProfile})
+}
+
+module.exports = {NewUser,Validation,GetUser,NewProfil,GetProfile,GetDelete}
