@@ -115,6 +115,21 @@
     display: flex;
   }
 }
+.container-new {
+  width: 95%;
+  height: 100vh;
+  margin: auto;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.container-new .flex-video {
+  flex: 70%;
+}
+.container-new .flex-sub {
+  flex: 30%;
+}
+
 * {
   margin: 0px;
   padding: 0px;

@@ -82,8 +82,27 @@ const GetVideo = async () => {
 }
 
 //deleteProfile
-const GetDeleteVideo = async(Title) => {
-    return await Videos.deleteOne({Title})
+const GetDeleteVideo = async(id) => {
+    return await Videos.deleteOne({_id:id})
 }
 
-module.exports = {NewUser,Validation,GetUser,NewProfil,GetProfile,GetDelete,NewVideo,GetVideo,GetDeleteVideo}
+//getVideoById
+const GetVideoById = async(id) => {
+    return await Videos.findOne({_id:id})
+}
+
+//updateVideoViews
+const UpdateVideoViews = async(id,Views) => {
+    return await Videos.updateOne(
+        {
+            _id: id
+        },
+        {
+            $set: {
+                Views,
+            }
+        }
+    )
+}
+
+module.exports = {NewUser,Validation,GetUser,NewProfil,GetProfile,GetDelete,NewVideo,GetVideo,GetDeleteVideo,GetVideoById,UpdateVideoViews}

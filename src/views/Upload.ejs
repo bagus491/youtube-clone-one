@@ -110,7 +110,7 @@
                   <h5 class="card-title"><%= e.Title %></h5>
                   <p class="card-text"><%= e.Desc %></p>
                   <p class="text-muted">Views: <%= e.Views %></p>
-                  <a href="/dasbord/watch/<%= e._id %>" class="btn btn-primary">Watch Video</a>
+                  <a href="/watch/<%= e._id %>" class="btn btn-primary">Watch Video</a>
                   <br><br>
                   <form method="post" action="/dasbord/upload?_method=DELETE">
                     <input type="hidden" name="deleteVIdeo" value="<%= e._id %>">

@@ -1,11 +1,10 @@
-const {NewVideo,GetVideo,GetDeleteVideo} = require('../Utils/Index')
+
+const {NewVideo,GetVideo,GetDeleteVideo,GetProfile,GetUser,GetVideoById,UpdateVideoViews} = require('../Utils/Index')
+
 
 //jsonwebtoken 
 const jwt = require('jsonwebtoken')
 const secret = '!@#$%&*()-==-}?123'
-
-const {GetUser} = require('../Utils/Index')
-
 
 //Profile
 const VideoGet = async (req,res) =>{
@@ -33,7 +32,7 @@ const VideoGet = async (req,res) =>{
         //filterArray
         const FilterdArray = Videos.filter((e) => e.username === decodedUser)
        
-
+  
         if(!FilterdArray){
             return res.status(203).render('Upload',{
              title: 'Upload',
@@ -153,21 +152,117 @@ const VideoDelete  = async (req,res) => {
           })
       }
 
-      const {deleteProfile} = req.body
+      const {deleteVIdeo} = req.body
 
-      const deleted = await GetDelete(deleteProfile)
+      const deleted = await GetDeleteVideo(deleteVIdeo)
 
       if(!deleted){
         return res.status(401)
       }
 
       req.flash('msg','success Delete')
-      res.redirect('/dasbord/profile')
+      res.redirect('/dasbord/upload')
     })
     
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})
   }
 }
+
+//WatchVideo
+const VideoWatch = async (req,res) => {
+  try{
+    const token = req.cookies.token || req.headers.authorization
+    if(token){
+      jwt.verify(token,secret, async (err,decoded) => {
+        if(err){
+          return res.status(401).redirect('/login')
+        }
+        const decodedUser = decoded.username
   
- module.exports = {VideoGet,VideoPost,VideoDelete}
+        const dataOk = await GetUser(decodedUser)
+        if(!dataOk){
+          return res.status(401).redirect('/login')
+        }
+  
+        const VideoOk = await GetVideoById(req.params.id)
+        if(!VideoOk){
+          return res.status(401).redirect('/login')
+        } 
+  
+       //destruction
+       const {_id,username,Title,Desc,PostDate,Videofile,Videotype,Views} = VideoOk
+
+       //const do Change Views
+        let DataView = parseInt(Views)
+      
+        // add one
+        DataView += 1
+
+        //newViews
+        const newView = DataView.toString()
+
+        //update
+        const updated = await UpdateVideoViews(req.params.id,newView)
+        if(!updated){
+          return res.status(401)
+        }
+
+       //chanse
+       const VideoData = Videofile.toString('base64')
+       const VideoPath = `data:${Videotype};base64,${VideoData}`;
+
+       //filtersub
+       const Videos = await GetVideo()
+    
+       const filterData = Videos.filter((e) => e._id != req.params.id)
+        
+       const Data = {_id,username,Title,Desc,PostDate,VideoPath,Views}
+      
+
+       res.render('Watch',{
+        title:'halaman/watch',
+        layout: 'Watch.ejs',
+        Data,
+        user:true,
+        filterData
+       })
+        
+      })
+      
+    }else{
+      const VideoOk = await GetVideoById(req.params.id)
+      if(!VideoOk){
+        return res.status(401)
+      } 
+
+     //destruction
+     const {_id,Title,Desc,PostDate,Videofile,Videotype} = VideoOk
+    
+     //chanse
+     const VideoData = Videofile.toString('base64')
+     const VideoPath = `data:${Videotype};base64,${VideoData}`;
+
+       //filtersub
+       const Videos = await GetVideo()
+
+       const filterData = Videos.filter((e) => e._id.toString() != req.params.id.toString())
+  
+     
+     const Data = {_id,Title,Desc,PostDate,VideoPath}
+
+     res.render('Watch',{
+      title:'halaman/watch',
+      layout: 'Watch.ejs',
+      Data,
+      user:false,
+      filterData
+     })
+    }
+
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
+  
+ module.exports = {VideoGet,VideoPost,VideoDelete,VideoWatch}

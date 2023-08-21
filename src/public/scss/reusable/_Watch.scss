@@ -1,0 +1,20 @@
+.container-new {
+    width: 95%;
+    height: 100vh;
+    // background: salmon;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+
+    & .flex-video {
+        flex: 70%;
+        // background: aqua;
+    }
+
+    & .flex-sub {
+        flex: 30%;
+    //    background: red;
+    }
+}
+

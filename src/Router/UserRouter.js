@@ -3,7 +3,7 @@ const app = express()
 //UserControllers
 const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret} = require('../Controllers/UsersControllers')
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
-const {VideoGet,VideoPost,VideoDelete} = require('../Controllers/VideoControllers')
+const {VideoGet,VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
 //auth
 const Auth = require('../Auth/Auth')
 //getUser
@@ -68,7 +68,8 @@ app.get('/dasbord',DasbordWeb)
 app.get('/dasbord/upload',VideoGet)
 //profile
 app.get('/dasbord/profile',ProfileGet)
-
+//Watch
+app.get('/watch/:id',VideoWatch)
 
 //post
 app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)
@@ -76,6 +77,8 @@ app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
 
 //deleteProfile
 app.delete('/dasbord/profile',ProfileDelete)
+//deleteVideo
+app.delete('/dasbord/upload',VideoDelete)
 //logout
 app.get('/dasbord/logout',(req,res) => {
     req.flash('msg','success Logout')
