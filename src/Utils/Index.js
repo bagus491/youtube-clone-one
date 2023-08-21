@@ -55,8 +55,35 @@ const GetProfile = async (username) => {
 }
 
 //deleteProfile
-const GetDelete = async(NameProfile) => {
-    return await Profile.deleteOne({NameProfile})
+const GetDelete = async(_id) => {
+    return await Profile.deleteOne({_id})
 }
 
-module.exports = {NewUser,Validation,GetUser,NewProfil,GetProfile,GetDelete}
+
+//modal video
+const Videos = require('../Models/Videos')
+// new Profile
+const NewVideo = (username,Title,Desc,PostDate,file,Views) =>{
+    return new Videos({
+        username,
+        Title,
+        Desc,
+        PostDate,
+        Videoname:file.filename,
+        Videofile:file.buffer,
+        Videotype:file.mimetype,
+        Views,
+    })
+}
+
+//GetProfile
+const GetVideo = async () => {
+    return await Videos.find()
+}
+
+//deleteProfile
+const GetDeleteVideo = async(Title) => {
+    return await Videos.deleteOne({Title})
+}
+
+module.exports = {NewUser,Validation,GetUser,NewProfil,GetProfile,GetDelete,NewVideo,GetVideo,GetDeleteVideo}

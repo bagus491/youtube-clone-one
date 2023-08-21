@@ -1,8 +1,9 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,UploadWeb} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret} = require('../Controllers/UsersControllers')
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
+const {VideoGet,VideoPost,VideoDelete} = require('../Controllers/VideoControllers')
 //auth
 const Auth = require('../Auth/Auth')
 //getUser
@@ -64,14 +65,14 @@ app.get('/register',RegisterPage)
 //Dasbord
 app.get('/dasbord',DasbordWeb)
 //upload
-app.get('/dasbord/upload',UploadWeb)
+app.get('/dasbord/upload',VideoGet)
 //profile
 app.get('/dasbord/profile',ProfileGet)
 
 
 //post
 app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)
-
+app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
 
 //deleteProfile
 app.delete('/dasbord/profile',ProfileDelete)

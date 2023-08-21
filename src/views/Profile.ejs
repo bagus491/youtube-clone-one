@@ -115,7 +115,7 @@
                   <h5 class="card-title"><%= Profile.NameProfile %></h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                   <form method="post" action="/dasbord/profile?_method=DELETE">
-                     <input type="hidden" name="deleteProfile" value="<%= Profile.NameProfile %>">
+                     <input type="hidden" name="deleteProfile" value="<%= Profile._id %>">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('yakin?')">Delete</button>
                   </form>
                 </div>

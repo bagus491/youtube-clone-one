@@ -32,14 +32,22 @@ const LoginPage = (req,res) => {
 
     jwt.verify(token,secret,async (err,decoded) => {
       if(err){
-        return res.status(401)
+        return res.status(401).render('Login',{
+          title: 'Login',
+          layout : 'Login.ejs',
+          msg: req.flash('msg')
+        })
     }
 
     const decodedUser = decoded.username
     
     const CheckUser = await GetUser(decodedUser)
     if(!CheckUser){
-        return res.status(401)
+        return res.status(401).render('Login',{
+          title: 'Login',
+          layout : 'Login.ejs',
+          msg: req.flash('msg')
+        })
     }
 
     res.redirect('/dasbord')
@@ -74,17 +82,7 @@ const DasbordWeb = (req,res) => {
   }
 }
 
-//uploadWeb
-const UploadWeb = (req,res) => {
-  try{
-    res.render('Upload',{
-      title: 'Upload',
-      layout : 'Upload.ejs'
-    })
-  }catch(error){
-    res.status(500).json({msg : 'Internal Server Error'})
-  }
-}
 
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,UploadWeb,jwt,secret}
+
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret}

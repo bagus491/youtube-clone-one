@@ -37,12 +37,12 @@ const ProfileGet = async (req,res) =>{
             })
         }
 
-        const {NameProfile,imageFile,imageType} = oneUser
+        const {_id,NameProfile,imageFile,imageType} = oneUser
         //decodediMage
         const ImageData = imageFile.toString('base64')
         const ImagePath  = `data:${imageType};base64,${ImageData}`
 
-        const Profile = {NameProfile,ImagePath}
+        const Profile = {_id,NameProfile,ImagePath}
         res.render('Profile',{
           title: 'Profile',
           layout : 'Profile.ejs',
@@ -143,4 +143,4 @@ const ProfileDelete  = async (req,res) => {
   }
 }
   
-  module.exports = {ProfileGet,ProfilePost,ProfileDelete}
+ module.exports = {ProfileGet,ProfilePost,ProfileDelete}
