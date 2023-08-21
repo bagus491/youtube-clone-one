@@ -27,8 +27,8 @@
                         <li><a href="/dasbord">Beranda</a></li>
                     </ul>
                         <div class="searchform">
-                            <form class="d-flex" role="search" style="display: flex; flex-direction: column;">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <form class="d-flex" role="search" style="display: flex; flex-direction: column;" action="/search" method="get">
+                                <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
                                 <br>
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                               </form>
@@ -50,8 +50,8 @@
                     </ul>
                 </div>
                 <div class="search">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex" role="search" action="/search" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                       </form>
                 </div>
@@ -82,6 +82,29 @@
         })
     </script>
     </nav>
+
+    <div class="container" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+        <div class="list-card" style="flex: 50%; padding: 20px; display: flex; flex-wrap: wrap;">
+        <% if (Video.length != 0) { %>
+          <% Video.forEach(e => { %>
+            <div class="card" style="width: 20rem; overflow: hidden; margin-left: 15px; margin-top: 15px;">
+              <figure>
+                <video loop autoplay muted="autoplay"  width="100%" height="200px" class="played" >
+                    <source src="<%= e.VideoPath %>" type="video/mp4">
+                </video>
+              </figure>
+                <div class="card-body">
+                  <h5 class="card-title"><a href="/watch/<%= e._id %>" style="color: black;"><%= e.Title %></a></h5>
+                  <p class="card-text"><%= e.Desc %></p>
+                  <p class="text-muted">Views: <%= e.Views %></p>        
+                </div>
+              </div>
+          <% }) %>
+            <% } else {%>
+                <h1>Empty Video</h1>
+            <% } %>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -52,7 +52,7 @@
                     </div>
                     <div class="search">
                         <form class="d-flex" role="search" action="/search" method="get">
-                            <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                            <input class="form-control me-2" type="search"  name="q" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                           </form>
                     </div>
@@ -87,41 +87,22 @@
         <%- include('./nav.ejs') %>
     <% } %>
         
-    <div class="container-new">
-        <div class="flex-video">
-           <% if (Data) { %>
-            <figcaption>
-                <video controls autoplay  width="100%" height="500px">
-                    <source src="<%= Data.VideoPath %>" type="video/mp4">
-                </video>
-            </figcaption>
-            <h1><%= Data.Title %></h1>
-            <h3><%= Data.username %></h3>
-            <p class="card-text">Views: <%= Data.Views %></p>
-            <div class="card" style="width: 100%;">
+    <div class="container" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+        <div class="list-card" style="flex: 50%; padding: 20px; display: flex; flex-wrap: wrap;">
+        <% if (Video.length != 0) { %>
+          <% Video.forEach(e => { %>
+            <div class="card" style="width: 20rem; overflow: hidden; margin-left: 15px; margin-top: 15px;">
                 <div class="card-body">
-                  <h6><%= Data.PostDate %></h6>
-                  <br>
-                  <p><%= Data.Desc %></p>
+                  <h5 class="card-title"><a href="/watch/<%= e._id %>" style="color: black;"><%= e.Title %></a></h5>
+                  <p class="card-text"><%= e.Desc %></p>
+                  <p class="text-muted">Views: <%= e.Views %></p>        
                 </div>
               </div>
-           <% } else {%>
-            <h1>404 Not Found</h1>
+          <% }) %>
+            <% } else {%>
+                <h1>Empty Video</h1>
             <% } %>
         </div>
-        <div class="flex-sub">
-            <br><br><br>
-            <% filterData.forEach(e => { %>
-                <div class="card" style="width: 18rem; margin-left: 10px; margin-top: 10px;">
-                    <div class="card-body">
-                      <h5 class="card-title"><a href="/watch/<%= e._id %>" style="text-decoration: none; color: black;"><%= e.Title %></a></h5>
-                      <h6 class="card-subtitle mb-2 text-body-secondary"><%= e.username %></h6>
-                      <p class="card-text"><%= e.Views %></p>
-                    </div>
-                  </div>
-              <% }) %>
-                   
-          </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>

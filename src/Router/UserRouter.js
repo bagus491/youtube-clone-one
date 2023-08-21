@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,SearchVideo} = require('../Controllers/UsersControllers')
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
 const {VideoGet,VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
 //auth
@@ -34,7 +34,7 @@ app.use('/dasbord/',(req,res,next) => {
     try{
         const token = req.cookies.token || req.headers.authorization
         if(!token){
-            return res.status(401).redirect('/login')
+            return res.status(401).redirect('/login').clearCookie('token','')
         }
 
         jwt.verify(token,secret,async(err,decoded) => {
@@ -70,6 +70,8 @@ app.get('/dasbord/upload',VideoGet)
 app.get('/dasbord/profile',ProfileGet)
 //Watch
 app.get('/watch/:id',VideoWatch)
+//search
+app.get('/search',SearchVideo)
 
 //post
 app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)

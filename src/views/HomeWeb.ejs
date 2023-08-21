@@ -1,11 +1,22 @@
-<div class="container">
-    <div class="card-list" style="margin-top: 50px; display: flex; flex-wrap: wrap;">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+<div class="container" style="display: flex; flex-wrap: wrap; flex-direction: column;">
+    <div class="list-card" style="flex: 50%; padding: 20px; display: flex; flex-wrap: wrap;">
+    <% if (Video.length != 0) { %>
+      <% Video.forEach(e => { %>
+        <div class="card" style="width: 20rem; overflow: hidden; margin-left: 15px; margin-top: 15px;">
+          <figure>
+            <video loop autoplay muted="autoplay"  width="100%" height="200px" class="played" >
+                <source src="<%= e.VideoPath %>" type="video/mp4">
+            </video>
+          </figure>
             <div class="card-body">
-                <a href="#">Go somewhere</a>
-               <p class="card-text">Views: </p>
+              <h5 class="card-title"><a href="/watch/<%= e._id %>" style="color: black;"><%= e.Title %></a></h5>
+              <p class="card-text"><%= e.username %></p>
+              <p class="text-muted">Views: <%= e.Views %></p>        
             </div>
-        </div>
+          </div>
+      <% }) %>
+        <% } else {%>
+            <h1>Empty Video</h1>
+        <% } %>
     </div>
 </div>

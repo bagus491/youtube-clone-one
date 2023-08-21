@@ -107,6 +107,33 @@
   .search {
     display: none;
   }
+  .tittle ul li a i {
+    font-size: 18px;
+  }
+  .profile ul li a {
+    margin-right: 20px;
+    font-size: 15px;
+  }
+  .searchform {
+    display: flex;
+  }
+}
+@media screen and (max-width: 768px) {
+  .search {
+    display: none;
+  }
+  .profile ul li a {
+    margin-right: 20px;
+    font-size: 15px;
+  }
+  .searchform {
+    display: flex;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .search {
+    display: none;
+  }
   .profile ul li a {
     margin-right: 20px;
     font-size: 15px;

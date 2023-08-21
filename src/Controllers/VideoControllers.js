@@ -1,5 +1,5 @@
 
-const {NewVideo,GetVideo,GetDeleteVideo,GetProfile,GetUser,GetVideoById,UpdateVideoViews} = require('../Utils/Index')
+const {NewVideo,GetVideo,GetDeleteVideo,GetUser,GetVideoById,UpdateVideoViews} = require('../Utils/Index')
 
 
 //jsonwebtoken 
@@ -61,7 +61,7 @@ const VideoGet = async (req,res) =>{
             return res.status(203).render('Upload',{
                 title: 'Upload',
                 layout : 'Upload.ejs',
-                 Vidoe: FilterdArray,
+                 Video: FilterdArray,
                  msg: req.flash('msg')
         })
         }
@@ -142,16 +142,6 @@ const VideoDelete  = async (req,res) => {
           return res.status(401)
       }
 
-      const oneUser = await GetProfile(decodedUser)
-      if(!oneUser){
-          return res.render('Profile',{
-            title: 'Profile',
-            layout : 'Profile.ejs',
-            Profile: oneUser,
-            msg: req.flash('msg')
-          })
-      }
-
       const {deleteVIdeo} = req.body
 
       const deleted = await GetDeleteVideo(deleteVIdeo)
@@ -193,20 +183,23 @@ const VideoWatch = async (req,res) => {
        //destruction
        const {_id,username,Title,Desc,PostDate,Videofile,Videotype,Views} = VideoOk
 
-       //const do Change Views
-        let DataView = parseInt(Views)
-      
-        // add one
-        DataView += 1
 
-        //newViews
-        const newView = DataView.toString()
-
-        //update
-        const updated = await UpdateVideoViews(req.params.id,newView)
-        if(!updated){
-          return res.status(401)
-        }
+       if(decodedUser != username){
+         //const do Change Views
+          let DataView = parseInt(Views)
+        
+          // add one
+          DataView += 1
+  
+          //newViews
+          const newView = DataView.toString()
+  
+          //update
+          const updated = await UpdateVideoViews(req.params.id,newView)
+          if(!updated){
+            return res.status(401)
+          } 
+       }
 
        //chanse
        const VideoData = Videofile.toString('base64')
@@ -237,7 +230,22 @@ const VideoWatch = async (req,res) => {
       } 
 
      //destruction
-     const {_id,Title,Desc,PostDate,Videofile,Videotype} = VideoOk
+     const {_id,Title,Desc,PostDate,Videofile,Videotype,Views} = VideoOk
+
+       //const do Change Views
+       let DataView = parseInt(Views)
+      
+       // add one
+       DataView += 1
+
+       //newViews
+       const newView = DataView.toString()
+
+       //update
+       const updated = await UpdateVideoViews(req.params.id,newView)
+       if(!updated){
+         return res.status(401)
+       }
     
      //chanse
      const VideoData = Videofile.toString('base64')
@@ -249,7 +257,7 @@ const VideoWatch = async (req,res) => {
        const filterData = Videos.filter((e) => e._id.toString() != req.params.id.toString())
   
      
-     const Data = {_id,Title,Desc,PostDate,VideoPath}
+     const Data = {_id,Title,Desc,PostDate,VideoPath,Views}
 
      res.render('Watch',{
       title:'halaman/watch',
