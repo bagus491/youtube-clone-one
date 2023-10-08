@@ -6,10 +6,13 @@ const VideoSchema = new mongoose.Schema({
     Title:String,
     Desc:String,
     Slug:String,
+    PosterName:String,
+    PosterFile:Buffer,
+    PosterType:String,
     PostDate:String,
-    Videoname:String,
-    Videofile:Buffer,
-    Videotype:String,
+    VideoName:String,
+    VideoFile:Buffer,
+    VideoType:String,
     Views:String,
 })
 

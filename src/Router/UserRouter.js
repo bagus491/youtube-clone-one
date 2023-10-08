@@ -57,7 +57,7 @@ app.get('/dasbord',DasbordWeb)
 
 //upload
 app.get('/dasbord/upload',DasbordUpload)
-app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
+app.post('/dasbord/upload',Upload.fields([{name: 'Video'},{name:'Poster'}]),VideoPost)
 app.delete('/dasbord/upload',VideoDelete)
 
 //profile

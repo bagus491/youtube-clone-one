@@ -1,17 +1,30 @@
 <div class="container" style="display: flex; flex-wrap: wrap; flex-direction: column;">
     
-    <div class="header-upload" style="flex: 50%; padding: 20px; display: flex; justify-content: center;">
-        <div class="header-text">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Upload Video
-              </button>
-            <%- include('./modal.ejs') %>
-            <% if (msg.length != 0) { %>
-                <div class="alert alert-success mt-4" role="alert">
-                  <%= msg %>
-                  </div>
-            <% } %>
-        </div>
+    <% if (msg.length != 0) { %>
+        <div class="alert alert-success mt-4" role="alert">
+          <%= msg %>
+          </div>
+    <% } %>
+          
+    <div class="class-form mt-4">
+        <form method="post" action="/dasbord/upload" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="Title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="Title"  name="Title" placeholder="Title" required>
+            </div>
+            <div class="mb-3">
+                <label for="Desc" class="form-label">Description</label>
+                <textarea class="form-control" placeholder="Description" id="floatingTextarea" name="Desc" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="Poster" class="form-label">Poster</label>
+                <input type="file" class="form-control" id="Poster"  name="Poster" required>
+              </div>
+            <div class="mb-3">
+              <label for="Video" class="form-label">Video</label>
+              <input type="file" class="form-control" id="Video"  name="Video" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>   
     </div>
-  
 </div>

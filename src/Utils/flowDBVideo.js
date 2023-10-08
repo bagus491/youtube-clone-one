@@ -1,15 +1,19 @@
 //modal video
 const Videos = require('../Models/Videos')
 // new Profile
-const NewVideo = (username,Title,Desc,PostDate,file,Views) =>{
+const NewVideo = (username,Title,Desc,Slug,Ps,PostDate,Vd,Views) =>{
     return new Videos({
         username,
         Title,
         Desc,
+        Slug,
+        PosterName: Ps.filename,
+        PosterFile: Ps.buffer,
+        PosterType: Ps.mimetype,
         PostDate,
-        Videoname:file.filename,
-        Videofile:file.buffer,
-        Videotype:file.mimetype,
+        VideoName:Vd.filename,
+        VideoFile:Vd.buffer,
+        VideoType:Vd.mimetype,
         Views,
     })
 }
@@ -25,8 +29,8 @@ const GetDeleteVideo = async(id) => {
 }
 
 //getVideoById
-const GetVideoById = async(id) => {
-    return await Videos.findOne({_id:id})
+const GetVideoById = async(Slug) => {
+    return await Videos.findOne({Slug})
 }
 
 //updateVideoViews
