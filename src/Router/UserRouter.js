@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload,SearchVideo} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload} = require('../Controllers/UsersControllers')
 
 //ProfileControllers
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
@@ -48,8 +48,7 @@ app.get('/login',LoginPage)
 app.get('/register',RegisterPage)
 //Watch
 app.get('/watch/:Slug/:id',VideoWatch)
-//search
-app.get('/search',SearchVideo)
+
 
 
 //Dasbord

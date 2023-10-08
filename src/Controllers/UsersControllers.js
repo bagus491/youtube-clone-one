@@ -2,8 +2,6 @@
 //getVideo
 const {GetVideo} = require('../Utils/flowDBVideo')
 
-//getUser
-const {GetUser} = require('../Utils/flowDBUser')
 
 
 //getProfile
@@ -18,9 +16,55 @@ const HomeWeb = async (req,res) => {
     try{
       const token = req.cookies.token
 
-      const Datas = await GetVideo()
+      let page = req.query.page
 
-    
+      let Datas = await GetVideo()
+
+      let search = req.query.q
+
+
+      if(search === '')
+      {
+        return res.status(401).redirect('/')
+      }
+
+      if(search)
+      {
+
+      let newDatas = Datas.filter((e) => e.Title.toLowerCase().includes(search.toLowerCase()) || e.username.toLowerCase().includes(search.toLowerCase()))
+
+      
+         //map
+      const dataMap = await Promise.all(
+        newDatas.map((e) => {
+          const {_id,username,Title,Desc,Slug,PostDate,VideoFile,VideoType,PosterFile,PosterType,Views} = e
+                  
+          //decoded
+          const VideoData = VideoFile.toString('base64')
+          //path
+          const VideoPath = `data:${VideoType};base64,${VideoData}`
+            //decodedPoster
+            const PosterData = PosterFile.toString('base64')
+            // value
+            const PosterPath = `data:${PosterType};base64,${PosterData}`
+  
+          return {_id,username,Title,Desc,Slug,PostDate,VideoPath,PosterPath,Views}
+        })
+      )
+
+      const verifyToken = await AuthToken(token)
+     
+       req.session.User = verifyToken
+
+      return res.render('HomeWeb',{
+        title: 'Home',
+        layout : 'main-layouts/main-layouts.ejs',
+        Video: dataMap,
+        Role: req.session.User ?  req.session.User  : undefined
+      })
+
+      }
+
       //map
       const dataMap = await Promise.all(
         Datas.map((e) => {
@@ -43,11 +87,30 @@ const HomeWeb = async (req,res) => {
      
        req.session.User = verifyToken
 
+       //pagination
+       let jmlhperhalaman = 5
+      //  panjangData
+      let panjangData = dataMap.length
+      // jmlhhalaman
+      let jmlhhalaman = Math.ceil(panjangData / jmlhperhalaman)
+      // awal data
+      let pageData = page ?  page  : 1
+
+      // strindex
+      let strindex = (pageData - 1 ) * jmlhperhalaman
+      //lastindex
+      let indexlas = strindex + jmlhperhalaman;
+
+      // math.slice
+      const dataMapSlice = dataMap.slice(strindex,indexlas)
+      
+
       res.render('HomeWeb',{
         title: 'Home',
         layout : 'main-layouts/main-layouts.ejs',
-        Video: dataMap,
-        Role: req.session.User ?  req.session.User  : undefined
+        Video: dataMapSlice,
+        Role: req.session.User ?  req.session.User  : undefined,
+        jmlhhalaman
       })
     }catch(error){
         res.status(500).json({msg : 'Internal Server Error'})
@@ -68,6 +131,13 @@ const DasbordWeb = async (req,res) => {
     if(!verifyToken)
     {
       return res.status(401).redirect('/login')
+    }
+
+    const search = req.query.q
+
+    if(search)
+    {
+      return res.redirect('/')
     }
 
     //this array
@@ -152,6 +222,13 @@ const DasbordUpload = async (req,res) => {
       return res.status(401).redirect('/login')
     }
 
+    const search = req.query.q
+
+    if(search)
+    {
+      return res.redirect('/')
+    }
+
     //checkProfile
     const checkProfile = await GetProfile(verifyToken)
 
@@ -219,60 +296,6 @@ const RegisterPage = (req,res) => {
 
 
 
-//search
-const SearchVideo = async (req,res) => {
-  try{
-    const token = req.cookies.token || req.headers.authorization
-    if(token){
-      jwt.verify(token,secret, async (err,decoded) => {
-        if(err){
-          return res.status(401).redirect('/login')
-        }
-        const decodedUser = decoded.username
-  
-        const dataOk = await GetUser(decodedUser)
-        if(!dataOk){
-          return res.status(401).redirect('/login')
-        }
-  
-        const {q} = req.query
-    
-        //videoDatas
-        const Datas = await GetVideo()
-    
-        //filter
-        const FilterDatas = Datas.filter((e) => e.Title.toLowerCase().includes(q.toLowerCase()))
-  
-      
-       res.render('Search',{
-        title:'halaman/search',
-        layout: 'search.ejs',
-        user:true,
-       Video: FilterDatas
-       })
-        
-      })
-      
-    }else{
-    
-      const {q} = req.query
-    
-      //videoDatas
-      const Datas = await GetVideo()
-  
-      //filter
-      const FilterDatas = Datas.filter((e) => e.Title.toLowerCase().includes(q.toLowerCase()))
 
-      res.render('Search',{
-        title:'halaman/search',
-        layout: 'search.ejs',
-        user:false,
-       Video: FilterDatas
-       })
-    }
-  }catch(error){
-    res.status(500).json({msg : 'Internal Server Error'})
-  }
-}
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload,SearchVideo}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload}

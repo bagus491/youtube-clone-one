@@ -1,10 +1,13 @@
 //express-validator
 const {check} = require('express-validator')
 
+//users
+const {GetUser} = require('../Utils/flowDBUser')
+
 
 const Validation = [
     check('username').custom(async (value) => {
-        const duplikat = await Users.findOne({username: value})
+        const duplikat = await GetUser(value)
         if(duplikat){
             throw new Error('username Exist')
         }else{

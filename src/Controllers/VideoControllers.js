@@ -39,6 +39,8 @@ const VideoPost = async (req,res)=>{
     // sameArray
     const FindPosterFormat = PosterValid.find((e) => e === lastFormat)
 
+
+
     if(!FindPosterFormat)
     {
       req.flash('msg','Your Upload Not Poster')
@@ -55,6 +57,7 @@ const VideoPost = async (req,res)=>{
     const getFormat = ChangeType[ChangeType.length - 1]
     //sameArray
     const FindFormat = VideoRule.find((e) => e === getFormat)
+
 
     if(!FindFormat)
     {
@@ -96,6 +99,8 @@ const VideoPost = async (req,res)=>{
     //saved
     const SaveVideo = await getFuPro.save()
 
+  
+
     if(!SaveVideo){
       return res.status(401).redirect('/dasbord/upload')
     }
@@ -105,7 +110,7 @@ const VideoPost = async (req,res)=>{
 
     }
     
-    const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug,req.files['Poster'][0],PostDate,req.files['Video'][0],Views)
+    const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug = Title,req.files['Poster'][0],PostDate,req.files['Video'][0],Views)
       
     //saved
     const SaveVideo = await getFuPro.save()

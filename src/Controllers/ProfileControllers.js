@@ -22,6 +22,13 @@ const ProfileGet = async (req,res) =>{
         return res.status(401).redirect('/login')
       }
 
+      const search = req.query.q
+
+      if(search)
+      {
+        return res.redirect('/')
+      }
+
       const oneUser = await GetProfile(verifyToken)
      
       req.session.User = verifyToken
@@ -75,6 +82,23 @@ const ProfilePost = async (req,res)=>{
   const {NameProfile} = req.body
 
   let Subs = "0"
+
+   //validatePoster
+   const PosterType = req.file.mimetype
+   //PosterValid
+   const PosterValid = ['png','jpeg','jpg']
+   // splitPoster
+   const TypeChange = PosterType.split('/')
+   // getLast
+   const lastFormat = TypeChange[TypeChange.length - 1]
+   // sameArray
+   const FindPosterFormat = PosterValid.find((e) => e === lastFormat)
+
+   if(!FindPosterFormat)
+   {
+     req.flash('msg','Your Upload Not Poster,')
+     return res.status(401).redirect('/dasbord/upload')
+   }
       
   const getFuPro = NewProfil(verifyToken,NameProfile,Subs,req.file)
     
