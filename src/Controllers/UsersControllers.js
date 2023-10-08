@@ -50,7 +50,7 @@ const HomeWeb = async (req,res) => {
 //Dasbord
 const DasbordWeb = async (req,res) => {
   try{
-    const token = req.cookies.token || req.headers.authorization
+    const token = req.cookies.token 
     if(!token){
       return res.status(401)
     }
@@ -149,9 +149,9 @@ const DasbordUpload = async (req,res) => {
 
 
 //loginpage
-const LoginPage = (req,res) => {
+const LoginPage = async (req,res) => {
   try{
-    const token = req.cookies.token || req.headers.authorization
+    const token = req.cookies.token 
     if(!token) {
       return res.status(401).render('Login',{
         title: 'Login',
@@ -160,28 +160,19 @@ const LoginPage = (req,res) => {
       })
     }
 
-    jwt.verify(token,secret,async (err,decoded) => {
-      if(err){
-        return res.status(401).render('Login',{
-          title: 'Login',
-          layout : 'Login.ejs',
-          msg: req.flash('msg')
-        })
+    const verifyToken = await AuthToken(token)
+    if(!verifyToken)
+    {
+      return res.status(401).render('Login',{
+        title: 'Login',
+        layout : 'Login.ejs',
+        msg: req.flash('msg')
+      })
     }
 
-    const decodedUser = decoded.username
     
-    const CheckUser = await GetUser(decodedUser)
-    if(!CheckUser){
-        return res.status(401).render('Login',{
-          title: 'Login',
-          layout : 'Login.ejs',
-          msg: req.flash('msg')
-        })
-    }
-
-    res.redirect('/dasbord')
-    })
+    res.redirect('/')
+    
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})
   }
