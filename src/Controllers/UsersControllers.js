@@ -10,6 +10,7 @@ const HomeWeb = async (req,res) => {
     try{
       const Datas = await GetVideo()
 
+    
       //map
       const dataMap = await Promise.all(
         Datas.map((e) => {
@@ -23,6 +24,7 @@ const HomeWeb = async (req,res) => {
           return {_id,username,Title,Desc,PostDate,VideoPath,Views}
         })
       )
+     
 
       res.render('HomeWeb',{
         title: 'Home',

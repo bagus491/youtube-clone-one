@@ -38,6 +38,15 @@ app.use(flash())
 //database
 require('./src/Db/Db')
 
+//addOn
+const helmet = require('helmet')
+app.use(helmet())
+
+const cors = require('cors')
+app.use(cors({
+    origin: 'http://localhost:3000'
+}))
+
 //four
 const UserRouter = require('./src/Router/UserRouter')
 app.use(UserRouter)
