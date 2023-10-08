@@ -5,6 +5,10 @@ const {GetVideo} = require('../Utils/flowDBVideo')
 //getUser
 const {GetUser} = require('../Utils/flowDBUser')
 
+
+//getProfile
+const {GetProfile} = require('../Utils/flowDBProfile')
+
 //verfiy
 const {AuthToken} = require('../Auth/AuthMiddleware')
 
@@ -20,14 +24,18 @@ const HomeWeb = async (req,res) => {
       //map
       const dataMap = await Promise.all(
         Datas.map((e) => {
-          const {_id,username,Title,Desc,PostDate,Videofile,Videotype,Views} = e
+          const {_id,username,Title,Desc,Slug,PostDate,VideoFile,VideoType,PosterFile,PosterType,Views} = e
                   
           //decoded
-          const VideoData = Videofile.toString('base64')
+          const VideoData = VideoFile.toString('base64')
           //path
-          const VideoPath = `data:${Videotype};base64,${VideoData}`
+          const VideoPath = `data:${VideoType};base64,${VideoData}`
+            //decodedPoster
+            const PosterData = PosterFile.toString('base64')
+            // value
+            const PosterPath = `data:${PosterType};base64,${PosterData}`
   
-          return {_id,username,Title,Desc,PostDate,VideoPath,Views}
+          return {_id,username,Title,Desc,Slug,PostDate,VideoPath,PosterPath,Views}
         })
       )
 
@@ -67,6 +75,7 @@ const DasbordWeb = async (req,res) => {
 
     //filterArray
     const FilterdArray = Videos.filter((e) => e.username === verifyToken)
+  
    
     req.session.User = verifyToken
 
@@ -84,16 +93,25 @@ const DasbordWeb = async (req,res) => {
     //map
     const Changes = await Promise.all(
         FilterdArray.map((e) => {
-            const {_id,Title,Desc,PostDate,Videofile,Videotype,Views} = e
+            const {_id,Title,Desc,Slug,PosterType,PosterFile,PostDate,VideoFile,VideoType,Views} = e
             
             //decoded
-            const VideoData = Videofile.toString('base64')
+            const VideoData = VideoFile.toString('base64')
             //path
-            const VideoPath = `data:${Videotype};base64,${VideoData}`
+            const VideoPath = `data:${VideoType};base64,${VideoData}`
 
-            return {_id,Title,Desc,PostDate,VideoPath,Views}
+            //decodedPoster
+            const PosterData = PosterFile.toString('base64')
+            // value
+            const PosterPath = `data:${PosterType};base64,${PosterData}`
+
+  
+
+            return {_id,Title,Desc,Slug,PostDate,VideoPath,PosterPath,Views}
         })
     )
+
+  
 
     if(!Changes){
       return res.status(203).render('Dasbord',{
@@ -109,7 +127,7 @@ const DasbordWeb = async (req,res) => {
     res.status(200).render('Dasbord',{
       title: 'halaman/Dasbord',
       layout : 'main-layouts/main-layouts.ejs',
-       Video: FilterdArray,
+       Video: Changes,
        msg: req.flash('msg'),
        Role: req.session.User ?  req.session.User  : undefined
      })
@@ -132,6 +150,15 @@ const DasbordUpload = async (req,res) => {
     if(!verifyToken)
     {
       return res.status(401).redirect('/login')
+    }
+
+    //checkProfile
+    const checkProfile = await GetProfile(verifyToken)
+
+    if(!checkProfile)
+    {
+      req.flash('msg','upload Profile First')
+      return res.status(401).redirect('/dasbord/profile')
     }
 
     req.session.User = verifyToken

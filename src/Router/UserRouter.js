@@ -47,7 +47,7 @@ app.get('/login',LoginPage)
 //Register
 app.get('/register',RegisterPage)
 //Watch
-app.get('/watch/:id',VideoWatch)
+app.get('/watch/:Slug/:id',VideoWatch)
 //search
 app.get('/search',SearchVideo)
 

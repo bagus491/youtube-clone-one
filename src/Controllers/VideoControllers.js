@@ -1,12 +1,11 @@
 
 const {NewVideo,GetVideo,GetDeleteVideo,GetVideoById,UpdateVideoViews} = require('../Utils/flowDBVideo')
 
-//User
-const {GetUser} = require('../Utils/flowDBUser')
+
 
 
 // verify
-const {jwt,secret,AuthToken} = require('../Auth/AuthMiddleware')
+const {AuthToken} = require('../Auth/AuthMiddleware')
 
 
 
@@ -90,7 +89,7 @@ const VideoPost = async (req,res)=>{
       const Slug = beforeSlug.join('') + lastStripSplit.join('')
       
 
-      const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug,req.files['Video'][0],PostDate,req.files['Poster'][0],Views)
+      const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug,req.files['Poster'][0],PostDate,req.files['Video'][0],Views)
 
    
       
@@ -106,7 +105,7 @@ const VideoPost = async (req,res)=>{
 
     }
     
-    const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug,req.files['Video'][0],PostDate,req.files['Poster'][0],Views)
+    const getFuPro = await NewVideo(verifyToken,Title,Desc,Slug,req.files['Poster'][0],PostDate,req.files['Video'][0],Views)
       
     //saved
     const SaveVideo = await getFuPro.save()
@@ -140,16 +139,16 @@ const VideoDelete  = async (req,res) => {
       return res.status(401).redirect('/login')
     }
    
-    const {deleteVIdeo} = req.body
+    const {_id} = req.body
 
-    const deleted = await GetDeleteVideo(deleteVIdeo)
+    const deleted = await GetDeleteVideo(_id)
 
     if(!deleted){
       return res.status(401).redirect('/dasbord')
     }
 
     req.flash('msg','success Delete')
-    res.redirect('/dasbord/upload')
+    res.redirect('/dasbord')
 
     
   }catch(error){
@@ -160,66 +159,75 @@ const VideoDelete  = async (req,res) => {
 //WatchVideo
 const VideoWatch = async (req,res) => {
   try{
-    const token = req.cookies.token || req.headers.authorization
+    const token = req.cookies.token 
     if(token){
-      jwt.verify(token,secret, async (err,decoded) => {
-        if(err){
-          return res.status(401).redirect('/login')
-        }
-        const decodedUser = decoded.username
-  
-        const dataOk = await GetUser(decodedUser)
-        if(!dataOk){
-          return res.status(401).redirect('/login')
-        }
-  
-        const VideoOk = await GetVideoById(req.params.id)
-        if(!VideoOk){
-          return res.status(401).redirect('/login')
-        } 
-  
-       //destruction
-       const {_id,username,Title,Desc,PostDate,Videofile,Videotype,Views} = VideoOk
+      const verifyToken = await AuthToken(token)
+
+      const VideoOk = await GetVideoById(req.params.id)
+      if(!VideoOk){
+        return res.status(401).redirect('/')
+      } 
 
 
-       if(decodedUser != username){
-         //const do Change Views
-          let DataView = parseInt(Views)
-        
-          // add one
-          DataView += 1
-  
-          //newViews
-          const newView = DataView.toString()
-  
-          //update
-          const updated = await UpdateVideoViews(req.params.id,newView)
-          if(!updated){
-            return res.status(401)
-          } 
-       }
+     //destruction
+     const {_id,username,Title,Desc,Slug,PostDate,VideoFile,VideoType,Views} = VideoOk
 
-       //chanse
-       const VideoData = Videofile.toString('base64')
-       const VideoPath = `data:${Videotype};base64,${VideoData}`;
-
-       //filtersub
-       const Videos = await GetVideo()
-    
-       const filterData = Videos.filter((e) => e._id != req.params.id)
-        
-       const Data = {_id,username,Title,Desc,PostDate,VideoPath,Views}
+ 
+     if(verifyToken != username){
+       //const do Change Views
+        let DataView = parseInt(Views)
       
+        // add one
+        DataView += 1
 
-       res.render('Watch',{
-        title:'halaman/watch',
-        layout: 'Watch.ejs',
-        Data,
-        user:true,
-        filterData
-       })
+        //newViews
+        const newView = DataView.toString()
+
+        //update
+        const updated = await UpdateVideoViews(_id,newView)
+        if(!updated){
+          return res.status(401)
+        } 
+     }
+
+     //chanse
+     const VideoData = VideoFile.toString('base64')
+     const VideoPath = `data:${VideoType};base64,${VideoData}`;
+
+    
+     //filtersub
+     const Videos = await GetVideo()
+
+  
+     const filterData = Videos.filter((e) => e._id.toString() != _id.toString())
+
+     const MapFilterData = await Promise.all(
+      filterData.map((e) => {
+        const {_id,Title,Slug,PosterFile,PosterType,Views} = e 
+
         
+          const PosterData = PosterFile.toString('base64')
+         const PosterPath = `data:${PosterType};base64,${PosterData}`
+
+         return {_id,Title,Slug,PosterPath,Views}
+
       })
+     )
+
+  
+     
+     const Data = {_id,username,Title,Desc,Slug,PostDate,VideoPath,Views}
+
+
+     req.session.User = username
+  
+     res.render('Watch',{
+      title:'halaman/watch',
+      layout: 'main-layouts/main-layouts.ejs',
+      Data,
+      Role: req.session.User ?  req.session.User  : undefined,
+      filterData:MapFilterData
+     })
       
     }else{
       const VideoOk = await GetVideoById(req.params.id)
@@ -227,8 +235,10 @@ const VideoWatch = async (req,res) => {
         return res.status(401)
       } 
 
+  
+
      //destruction
-     const {_id,Title,Desc,PostDate,Videofile,Videotype,Views} = VideoOk
+     const {_id,Title,Desc,Slug,PostDate,VideoFile,VideoType,Views} = VideoOk
 
        //const do Change Views
        let DataView = parseInt(Views)
@@ -246,23 +256,41 @@ const VideoWatch = async (req,res) => {
        }
     
      //chanse
-     const VideoData = Videofile.toString('base64')
-     const VideoPath = `data:${Videotype};base64,${VideoData}`;
+     const VideoData = VideoFile.toString('base64')
+     const VideoPath = `data:${VideoType};base64,${VideoData}`;
+
 
        //filtersub
        const Videos = await GetVideo()
+    
 
        const filterData = Videos.filter((e) => e._id.toString() != req.params.id.toString())
+
+  
+       const MapFilterData = await Promise.all(
+        filterData.map((e) => {
+          const {_id,Title,Slug,PosterFile,PosterType,Views} = e 
+  
+          
+            const PosterData = PosterFile.toString('base64')
+           const PosterPath = `data:${PosterType};base64,${PosterData}`
+  
+           return {_id,Title,Slug,PosterPath,Views}
+  
+        })
+       )
+
   
      
-     const Data = {_id,Title,Desc,PostDate,VideoPath,Views}
+     const Data = {_id,Title,Desc,Slug,PostDate,VideoPath,Views}
+  
 
      res.render('Watch',{
       title:'halaman/watch',
-      layout: 'Watch.ejs',
+      layout: 'main-layouts/main-layouts.ejs',
       Data,
-      user:false,
-      filterData
+      Role: req.session.User ?  req.session.User  : undefined,
+      filterData:MapFilterData
      })
     }
 

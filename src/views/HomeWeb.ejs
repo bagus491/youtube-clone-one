@@ -9,7 +9,7 @@
             </video>
           </figure>
             <div class="card-body">
-              <h5 class="card-title"><a href="/watch/<%= e._id %>" style="color: black;"><%= e.Title %></a></h5>
+              <h5 class="card-title"><a href="/watch/<%= e.Slug %>/<%= e._id %>" style="color: black;"><%= e.Title %></a></h5>
               <p class="card-text"><%= e.username %></p>
               <p class="text-muted">Views: <%= e.Views %></p>        
             </div>

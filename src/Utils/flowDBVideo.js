@@ -29,8 +29,8 @@ const GetDeleteVideo = async(id) => {
 }
 
 //getVideoById
-const GetVideoById = async(Slug) => {
-    return await Videos.findOne({Slug})
+const GetVideoById = async(id) => {
+    return await Videos.findOne({_id:id})
 }
 
 //updateVideoViews
