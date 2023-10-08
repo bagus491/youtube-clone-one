@@ -1,6 +1,4 @@
-//jsonwebtoken 
-const jwt = require('jsonwebtoken')
-const secret = '!@#$%&*()-==-}?123'
+
 //getVideo
 const {GetVideo} = require('../Utils/flowDBVideo')
 
@@ -177,4 +175,4 @@ const SearchVideo = async (req,res) => {
   }
 }
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,SearchVideo}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo}

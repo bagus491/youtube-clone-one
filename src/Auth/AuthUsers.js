@@ -1,7 +1,12 @@
 const express  = require('express')
 const app = express()
 const {validationResult} = require('express-validator')
-const {NewUser,Validation,GetUser} = require('../Utils/flowDBUser')
+
+//modelUser
+const {NewUser,GetUser} = require('../Utils/flowDBUser')
+
+//validation
+const {Validation} = require('../Utils/Verify.js')
 
 //const path 
 const path = require('path')

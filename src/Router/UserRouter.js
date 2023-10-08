@@ -1,13 +1,14 @@
 const express = require('express')
 const app = express()
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,jwt,secret,SearchVideo} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo} = require('../Controllers/UsersControllers')
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
 const {VideoGet,VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
+
 //auth
-const Auth = require('../Auth/Auth')
-//getUser
-const {GetUser} = require('../Utils/Index')
+const Auth = require('../Auth/AuthUsers')
+
+const {AuthToken} = require('../Auth/AuthMiddleware')
 
 //view engine
 const mainlayouts = require('express-ejs-layouts')
@@ -32,25 +33,21 @@ app.use(override('_method'))
 
 app.use('/dasbord/',(req,res,next) => {
     try{
-        const token = req.cookies.token || req.headers.authorization
+        const token = req.cookies.token 
         if(!token){
-            return res.status(401).redirect('/login').clearCookie('token','')
+            return res.status(401).redirect('/login')
         }
 
-        jwt.verify(token,secret,async(err,decoded) => {
-            if(err){
-                return res.status(401).redirect('/login')
-            }
+        const VerifyToken = AuthToken(token)
 
-            const decodedUser = decoded.username
-            
-            const CheckUser = await GetUser(decodedUser)
-            if(!CheckUser){
-                return res.status(401).redirect('/login')
-            }
+        if(!VerifyToken)
+        {
+            return res.status(401).redirect('/login')
+        }
 
-            next()
-        })
+        req.session.User = VerifyToken
+        next()
+
     }catch(error){
         res.status(500).json({msg : 'Internal Server Error'})
     }
