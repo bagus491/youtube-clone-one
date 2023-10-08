@@ -1,14 +1,22 @@
 const express = require('express')
 const app = express()
+
 //UserControllers
 const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo} = require('../Controllers/UsersControllers')
+
+//ProfileControllers
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
+
+//VideoControllers
 const {VideoGet,VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
+
+//LogoutController
+const {LogoutUser} = require('../Controllers/Auth/LogoutController')
 
 //auth
 const Auth = require('../Auth/AuthUsers')
 
-const {AuthToken} = require('../Auth/AuthMiddleware')
+const {CheckDasbord} =  require('../Controllers/Auth/MiddlewareDasbord')
 
 //view engine
 const mainlayouts = require('express-ejs-layouts')
@@ -30,28 +38,7 @@ const override = require('method-override')
 app.use(override('_method'))
 
 //midleware
-
-app.use('/dasbord/',(req,res,next) => {
-    try{
-        const token = req.cookies.token 
-        if(!token){
-            return res.status(401).redirect('/login')
-        }
-
-        const VerifyToken = AuthToken(token)
-
-        if(!VerifyToken)
-        {
-            return res.status(401).redirect('/login')
-        }
-
-        req.session.User = VerifyToken
-        next()
-
-    }catch(error){
-        res.status(500).json({msg : 'Internal Server Error'})
-    }
-})
+app.use('/dasbord',CheckDasbord)
 
 //get
 app.get('/',HomeWeb)
@@ -59,32 +46,28 @@ app.get('/',HomeWeb)
 app.get('/login',LoginPage)
 //Register
 app.get('/register',RegisterPage)
-//Dasbord
-app.get('/dasbord',DasbordWeb)
-//upload
-app.get('/dasbord/upload',VideoGet)
-//profile
-app.get('/dasbord/profile',ProfileGet)
 //Watch
 app.get('/watch/:id',VideoWatch)
 //search
 app.get('/search',SearchVideo)
 
-//post
-app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)
+
+//Dasbord
+app.get('/dasbord',DasbordWeb)
+
+//upload
+app.get('/dasbord/upload',VideoGet)
 app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
-
-//deleteProfile
-app.delete('/dasbord/profile',ProfileDelete)
-//deleteVideo
 app.delete('/dasbord/upload',VideoDelete)
-//logout
-app.get('/dasbord/logout',(req,res) => {
-    req.flash('msg','success Logout')
-    res.clearCookie('token','')
-    res.redirect('/login')
-})
 
+//profile
+app.get('/dasbord/profile',ProfileGet)
+app.post('/dasbord/profile',Upload.single('Avatar'),ProfilePost)
+app.delete('/dasbord/profile',ProfileDelete)
+
+
+//logout
+app.get('/dasbord/logout',LogoutUser)
 
 
 app.use(Auth)
