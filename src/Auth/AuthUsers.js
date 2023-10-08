@@ -1,7 +1,7 @@
 const express  = require('express')
 const app = express()
 const {validationResult} = require('express-validator')
-const {NewUser,Validation,GetUser} = require('../Utils/Index')
+const {NewUser,Validation,GetUser} = require('../Utils/flowDBUser')
 
 //const path 
 const path = require('path')
