@@ -9,79 +9,7 @@ const {GetUser} = require('../Utils/flowDBUser')
 const jwt = require('jsonwebtoken')
 const secret = '!@#$%&*()-==-}?123'
 
-//Profile
-const VideoGet = async (req,res) =>{
-    try{
-      const token = req.cookies.token || req.headers.authorization
-      if(!token){
-        return res.status(401)
-      }
 
-      jwt.verify(token,secret, async (err,decoded) => {
-        if(err){
-            return res.status(401)
-        }
-
-        const decodedUser = decoded.username
-        
-        const CheckUser = await GetUser(decodedUser)
-        if(!CheckUser){
-            return res.status(401)
-        }
-
-        //this array
-        const Videos = await GetVideo()
-
-        //filterArray
-        const FilterdArray = Videos.filter((e) => e.username === decodedUser)
-       
-  
-        if(!FilterdArray){
-            return res.status(203).render('Upload',{
-             title: 'Upload',
-             layout : 'Upload.ejs',
-              Video: FilterdArray,
-              msg: req.flash('msg')
-            })
-
-        }
-
-        //map
-        const Changes = await Promise.all(
-            FilterdArray.map((e) => {
-                const {_id,Title,Desc,PostDate,Videofile,Videotype,Views} = e
-                
-                //decoded
-                const VideoData = Videofile.toString('base64')
-                //path
-                const VideoPath = `data:${Videotype};base64,${VideoData}`
-
-                return {_id,Title,Desc,PostDate,VideoPath,Views}
-            })
-        )
-
-        if(!Changes){
-            return res.status(203).render('Upload',{
-                title: 'Upload',
-                layout : 'Upload.ejs',
-                 Video: FilterdArray,
-                 msg: req.flash('msg')
-        })
-        }
-        
-       
-        res.render('Upload',{
-            title: 'Upload',
-            layout : 'Upload.ejs',
-            Video: Changes,
-            msg : req.flash('msg')
-          })
-      })
-      
-    }catch(error){
-      res.status(500).json({msg : 'Internal Server Error'})
-    }
-  }
 
 //NewProfile
 const VideoPost = async (req,res)=>{
@@ -276,4 +204,4 @@ const VideoWatch = async (req,res) => {
   }
 }
   
- module.exports = {VideoGet,VideoPost,VideoDelete,VideoWatch}
+ module.exports = {VideoPost,VideoDelete,VideoWatch}

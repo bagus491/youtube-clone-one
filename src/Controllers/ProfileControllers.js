@@ -23,15 +23,16 @@ const ProfileGet = async (req,res) =>{
       }
 
       const oneUser = await GetProfile(verifyToken)
+     
+      req.session.User = verifyToken
 
-      const Role = req.session.User
       if(!oneUser){
-          return res.status(200).render('ProfileDasbord',{
+          return res.status(203).render('ProfileDasbord',{
             title: 'halaman/profile',
             layout : 'main-layouts/main-layouts.ejs',
             Profile: oneUser,
             msg: req.flash('msg'),
-            Role
+            Role: req.session.User ?  req.session.User  : undefined
           })
       }
 
@@ -46,7 +47,7 @@ const ProfileGet = async (req,res) =>{
         layout : 'main-layouts/main-layouts.ejs',
         Profile,
         msg: req.flash('msg'),
-        Role
+        Role: req.session.User ?  req.session.User  : undefined
       })
       
     }catch(error){

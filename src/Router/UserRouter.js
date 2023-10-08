@@ -8,7 +8,7 @@ const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo} = require('../Cont
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
 
 //VideoControllers
-const {VideoGet,VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
+const {VideoPost,VideoDelete,VideoWatch} = require('../Controllers/VideoControllers')
 
 //LogoutController
 const {LogoutUser} = require('../Controllers/Auth/LogoutController')
@@ -56,7 +56,7 @@ app.get('/search',SearchVideo)
 app.get('/dasbord',DasbordWeb)
 
 //upload
-app.get('/dasbord/upload',VideoGet)
+app.get('/dasbord/upload',VideoPost)
 app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
 app.delete('/dasbord/upload',VideoDelete)
 
