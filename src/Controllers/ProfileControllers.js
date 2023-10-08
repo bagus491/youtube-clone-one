@@ -1,10 +1,10 @@
-const {NewProfil,GetProfile,GetDelete} = require('../Utils/Index')
+const {NewProfil,GetProfile,DeleteProfile} = require('../Utils/flowDBProfile')
 
 //jsonwebtoken 
 const jwt = require('jsonwebtoken')
 const secret = '!@#$%&*()-==-}?123'
 
-const {GetUser} = require('../Utils/Index')
+const {GetUser} = require('../Utils/flowDBUser')
 
 
 //Profile
@@ -128,7 +128,7 @@ const ProfileDelete  = async (req,res) => {
 
       const {deleteProfile} = req.body
 
-      const deleted = await GetDelete(deleteProfile)
+      const deleted = await DeleteProfile(deleteProfile)
 
       if(!deleted){
         return res.status(401)

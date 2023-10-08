@@ -1,8 +1,11 @@
 //jsonwebtoken 
 const jwt = require('jsonwebtoken')
 const secret = '!@#$%&*()-==-}?123'
+//getVideo
+const {GetVideo} = require('../Utils/flowDBVideo')
+
 //getUser
-const {GetUser,GetVideo} = require('../Utils/Index')
+const {GetUser} = require('../Utils/flowDBUser')
 
 
 //homeWeb

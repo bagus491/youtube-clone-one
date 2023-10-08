@@ -1,5 +1,8 @@
 
-const {NewVideo,GetVideo,GetDeleteVideo,GetUser,GetVideoById,UpdateVideoViews} = require('../Utils/Index')
+const {NewVideo,GetVideo,GetDeleteVideo,GetVideoById,UpdateVideoViews} = require('../Utils/flowDBVideo')
+
+//User
+const {GetUser} = require('../Utils/flowDBUser')
 
 
 //jsonwebtoken 
