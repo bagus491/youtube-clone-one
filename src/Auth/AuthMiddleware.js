@@ -34,4 +34,4 @@ const AuthToken = (token) => {
 }
 
 
-module.exports = {AuthToken}
+module.exports = {AuthToken,jwt,secret}
