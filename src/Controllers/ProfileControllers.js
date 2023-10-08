@@ -23,12 +23,15 @@ const ProfileGet = async (req,res) =>{
       }
 
       const oneUser = await GetProfile(verifyToken)
+
+      const Role = req.session.User
       if(!oneUser){
           return res.status(200).render('ProfileDasbord',{
             title: 'halaman/profile',
-            layout : 'main-layouts/dasbord-layouts.ejs',
+            layout : 'main-layouts/main-layouts.ejs',
             Profile: oneUser,
-            msg: req.flash('msg')
+            msg: req.flash('msg'),
+            Role
           })
       }
 
@@ -40,9 +43,10 @@ const ProfileGet = async (req,res) =>{
   
       res.render('ProfileDasbord',{
         title: 'halaman/profile',
-        layout : 'main-layouts/dasbord-layouts.ejs',
+        layout : 'main-layouts/main-layouts.ejs',
         Profile,
-        msg: req.flash('msg')
+        msg: req.flash('msg'),
+        Role
       })
       
     }catch(error){

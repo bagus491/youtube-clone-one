@@ -1,38 +1,41 @@
-<div class="box">
-  <% if (msg.length != 0) { %>
-      <div class="alert alert-success" role="alert">
-        <%= msg %>
-        </div>
-  <% } %>
-  <% if (!Profile) { %>
-      <div class="card" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title">Add Profile</h5>
-            <form method="post" action="/dasbord/profile" enctype="multipart/form-data">
-              <div class="mb-3">
-                  <label for="NameProfile" class="form-label">NameProfile</label>
-                  <input type="text" class="form-control" id="NameProfile"  name="NameProfile" placeholder="NameProfile" required>
-                </div>
-              <div class="mb-3">
-                <label for="Avatar" class="form-label">Avatar</label>
-                <input type="file" class="form-control" id="Avatar"  name="Avatar" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-           
+<div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh;">
+  <div class="box">
+    <% if (msg.length != 0) { %>
+        <div class="alert alert-success" role="alert">
+          <%= msg %>
           </div>
+    <% } %>
+    <% if (!Profile) { %>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Add Profile</h5>
+              <form method="post" action="/dasbord/profile" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="NameProfile" class="form-label">NameProfile</label>
+                    <input type="text" class="form-control" id="NameProfile"  name="NameProfile" placeholder="NameProfile" required>
+                  </div>
+                <div class="mb-3">
+                  <label for="Avatar" class="form-label">Avatar</label>
+                  <input type="file" class="form-control" id="Avatar"  name="Avatar" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+             
+            </div>
+          </div>
+    <% } else { %>
+      <div class="card" style="width: 18rem;">
+        <img src="<%= Profile.ImagePath %>" class="card-img-top" alt="foto">
+        <div class="card-body">
+          <h5 class="card-title"><%= Profile.NameProfile %></h5>
+          <p class="card-text">Subs:<%= Profile.Subs %></p>
+          <form method="post" action="/dasbord/profile?_method=DELETE">
+             <input type="hidden" name="_id" value="<%= Profile._id %>">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('yakin?')">Delete</button>
+          </form>
         </div>
-  <% } else { %>
-    <div class="card" style="width: 18rem;">
-      <img src="<%= Profile.ImagePath %>" class="card-img-top" alt="foto">
-      <div class="card-body">
-        <h5 class="card-title"><%= Profile.NameProfile %></h5>
-        <p class="card-text">Subs:<%= Profile.Subs %></p>
-        <form method="post" action="/dasbord/profile?_method=DELETE">
-           <input type="hidden" name="_id" value="<%= Profile._id %>">
-          <button type="submit" class="btn btn-danger" onclick="return confirm('yakin?')">Delete</button>
-        </form>
       </div>
-    </div>
-   <% } %>
+     <% } %>
+  </div>
+
 </div>

@@ -13,7 +13,7 @@ const LoginPost = (req,res) => {
     
             res.cookie('token',token)
             req.session.User = username
-            res.redirect('/dasbord')
+            res.redirect('/')
         })
     }catch(error){
         res.status(500).json({msg : 'Internal Server Error'})

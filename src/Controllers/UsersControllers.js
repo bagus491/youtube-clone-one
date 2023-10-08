@@ -26,11 +26,13 @@ const HomeWeb = async (req,res) => {
         })
       )
      
+      const Role = req.session.User
 
       res.render('HomeWeb',{
         title: 'Home',
         layout : 'main-layouts/main-layouts.ejs',
-        Video: dataMap
+        Video: dataMap,
+        Role
       })
     }catch(error){
         res.status(500).json({msg : 'Internal Server Error'})

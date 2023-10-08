@@ -97,32 +97,7 @@
                 <% } %>
             </div>
         </div>
-        <div class="list-card" style="flex: 50%; padding: 20px; display: flex; flex-wrap: wrap;">
-        <% if (Video.length != 0) { %>
-          <% Video.forEach(e => { %>
-            <div class="card" style="width: 20rem; overflow: hidden; margin-left: 15px; margin-top: 15px;">
-              <figure>
-                <video loop autoplay muted="autoplay"  width="100%" height="200px" class="played" >
-                    <source src="<%= e.VideoPath %>" type="video/mp4">
-                </video>
-              </figure>
-                <div class="card-body">
-                  <h5 class="card-title"><%= e.Title %></h5>
-                  <p class="card-text"><%= e.Desc %></p>
-                  <p class="text-muted">Views: <%= e.Views %></p>
-                  <a href="/watch/<%= e._id %>" class="btn btn-primary">Watch Video</a>
-                  <br><br>
-                  <form method="post" action="/dasbord/upload?_method=DELETE">
-                    <input type="hidden" name="deleteVIdeo" value="<%= e._id %>">
-                   <button type="submit" class="btn btn-danger" onclick="return confirm('yakin?')">Delete</button>
-                 </form>
-                </div>
-              </div>
-          <% }) %>
-            <% } else {%>
-                <h1>Empty Video</h1>
-            <% } %>
-        </div>
+      
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>
