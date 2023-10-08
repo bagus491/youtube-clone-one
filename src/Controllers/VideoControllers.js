@@ -5,48 +5,43 @@ const {NewVideo,GetVideo,GetDeleteVideo,GetVideoById,UpdateVideoViews} = require
 const {GetUser} = require('../Utils/flowDBUser')
 
 
-//jsonwebtoken 
-const jwt = require('jsonwebtoken')
-const secret = '!@#$%&*()-==-}?123'
+// verify
+const {jwt,secret,AuthToken} = require('../Auth/AuthMiddleware')
 
 
 
 //NewProfile
 const VideoPost = async (req,res)=>{
   try{
-    const token = req.cookies.token || req.headers.authorization
+    const token = req.cookies.token 
     if(!token){
-      return res.status(401)
+      return res.status(401).redirect('/login')
+    }
+    
+    const verifyToken = await AuthToken(token)
+
+    if(!verifyToken)
+    {
+      return res.status(401).redirect('/login')
     }
 
-    jwt.verify(token,secret, async (err,decoded) => {
-      if(err){
-          return res.status(401)
-      }
-
-      const decodedUser = decoded.username
+    const {Title,Desc} = req.body
+    const PostDate = new Date()
+    const Views = "0"
+    
+    const getFuPro = NewVideo(decodedUser,Title,Desc,PostDate,req.file,Views)
       
-      const CheckUser = await GetUser(decodedUser)
-      if(!CheckUser){
-          return res.status(401)
-      }
+    //saved
+    const SaveVideo = await getFuPro.save()
 
-      const {Title,Desc} = req.body
-      const PostDate = new Date()
-      const Views = "0"
-      
-      const getFuPro = NewVideo(decodedUser,Title,Desc,PostDate,req.file,Views)
-        
-      //saved
-      const SaveVideo = await getFuPro.save()
+    if(!SaveVideo){
+      return res.status(401).redirect('/dasbord')
+    }
 
-      if(!SaveVideo){
-        return res.status(401)
-      }
+    req.flash('msg','success Add Video')
+    res.status(201).redirect('/dasbord/upload')
 
-      req.flash('msg','success Add Video')
-      res.status(201).redirect('/dasbord/upload')
-    })
+
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})
   }
@@ -56,34 +51,29 @@ const VideoPost = async (req,res)=>{
 //DeleteProfile
 const VideoDelete  = async (req,res) => {
   try{
-    const token = req.cookies.token || req.headers.authorization
+    const token = req.cookies.token 
     if(!token){
-      return res.status(401)
+      return res.status(401).redirect('/login')
     }
 
-    jwt.verify(token,secret, async (err,decoded) => {
-      if(err){
-          return res.status(401)
-      }
+    const verifyToken = await AuthToken(token)
 
-      const decodedUser = decoded.username
-      
-      const CheckUser = await GetUser(decodedUser)
-      if(!CheckUser){
-          return res.status(401)
-      }
+    if(!verifyToken)
+    {
+      return res.status(401).redirect('/login')
+    }
+   
+    const {deleteVIdeo} = req.body
 
-      const {deleteVIdeo} = req.body
+    const deleted = await GetDeleteVideo(deleteVIdeo)
 
-      const deleted = await GetDeleteVideo(deleteVIdeo)
+    if(!deleted){
+      return res.status(401).redirect('/dasbord')
+    }
 
-      if(!deleted){
-        return res.status(401)
-      }
+    req.flash('msg','success Delete')
+    res.redirect('/dasbord/upload')
 
-      req.flash('msg','success Delete')
-      res.redirect('/dasbord/upload')
-    })
     
   }catch(error){
     res.status(500).json({msg : 'Internal Server Error'})

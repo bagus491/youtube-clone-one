@@ -119,6 +119,34 @@ const DasbordWeb = async (req,res) => {
   }
 }
 
+// --dasbordupload
+const DasbordUpload = async (req,res) => {
+  try{
+    const token = req.cookies.token
+    if(!token){
+      return res.status(401).redirect('/login')
+    }
+
+    const verifyToken =  await AuthToken(token)
+    
+    if(!verifyToken)
+    {
+      return res.status(401).redirect('/login')
+    }
+
+    req.session.User = verifyToken
+
+    res.render('UploadDasbord',{
+      title: 'halaman/upload',
+      layout: 'main-layouts/main-layouts.ejs',
+      msg: req.flash('msg'),
+      Role: req.session.User ? req.session.User   :  undefined
+    })
+  }catch(error){
+    res.status(500).json({msg : 'Internal Server Error'})
+  }
+}
+
 
 //loginpage
 const LoginPage = (req,res) => {
@@ -229,4 +257,4 @@ const SearchVideo = async (req,res) => {
   }
 }
 
-module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo}
+module.exports = {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload,SearchVideo}

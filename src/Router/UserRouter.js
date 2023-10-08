@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 //UserControllers
-const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,SearchVideo} = require('../Controllers/UsersControllers')
+const {HomeWeb,LoginPage,RegisterPage,DasbordWeb,DasbordUpload,SearchVideo} = require('../Controllers/UsersControllers')
 
 //ProfileControllers
 const {ProfilePost,ProfileGet,ProfileDelete}  = require('../Controllers/ProfileControllers')
@@ -56,7 +56,7 @@ app.get('/search',SearchVideo)
 app.get('/dasbord',DasbordWeb)
 
 //upload
-app.get('/dasbord/upload',VideoPost)
+app.get('/dasbord/upload',DasbordUpload)
 app.post('/dasbord/upload',Upload.single('Video'),VideoPost)
 app.delete('/dasbord/upload',VideoDelete)
 
