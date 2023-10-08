@@ -23,6 +23,10 @@ const {LoginPost} = require('../Controllers/Auth/LoginController')
 const passport = require('passport')
 const LocalPassport = require('passport-local').Strategy
 
+//bcrypt
+const bcrypt = require('bcrypt')
+
+
 
 passport.use(new LocalPassport({usernameField: 'username'},async (username,password,done) => {
     try{

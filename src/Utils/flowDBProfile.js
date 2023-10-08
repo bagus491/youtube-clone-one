@@ -3,10 +3,11 @@ const Profile = require('../Models/Profile')
 
 
 // new Profile
-const NewProfil = (username,NameProfile,file) =>{
+const NewProfil = (username,NameProfile,Subs,file) =>{
     return new Profile({
         username,
         NameProfile,
+        Subs,
         imageName:file.filename,
         imageFile:file.buffer,
         imageType:file.mimetype,
